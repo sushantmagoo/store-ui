@@ -4,7 +4,8 @@ import { Card, CardImg, CardText, CardBody, CardTitle } from "reactstrap";
 export default function DishDetail({ dish }) {
   return dish ? (
     <div className="row">
-      <RenderDish dish={dish} /> <RenderComments comments={dish.comments} />
+      <RenderDish dish={dish} />
+      <RenderComments comments={dish.comments} />
     </div>
   ) : (
     <div className="row" />
@@ -27,7 +28,11 @@ function RenderDish({ dish }) {
 
 function RenderComments({ comments }) {
   const _comments = comments.map(cmnt => (
-    <li key={cmnt.id} style={{ listStyleType: "none", margin: "0 0 15px 0" }}>
+    <li
+      key={cmnt.id}
+      className="comment-spacing"
+      style={{ listStyleType: "none" }}
+    >
       {cmnt.comment} <br />
       --&nbsp;{cmnt.author},&nbsp;
       {new Intl.DateTimeFormat("en-US", {
