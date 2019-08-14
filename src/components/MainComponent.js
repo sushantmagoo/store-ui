@@ -4,7 +4,7 @@ import Menu from "./MenuComponent";
 import Contact from "./ContactComponent";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
-// import DishDetail from "./DishDetailComponent";
+import DishDetail from "./DishDetailComponent";
 import { DISHES } from "../shared/dishes";
 import { COMMENTS } from "../shared/comments";
 import { PROMOTIONS } from "../shared/promotions";
@@ -19,13 +19,8 @@ class Main extends Component {
       comments: COMMENTS,
       promotions: PROMOTIONS,
       leaders: LEADERS
-      // selectedDish: null
     };
   }
-
-  // onDishSelect(dishId) {
-  //   this.setState({ selectedDish: dishId });
-  // }
 
   render() {
     const HomePage = () => {
@@ -38,32 +33,35 @@ class Main extends Component {
       );
     };
 
+    const selectedDish = ({ match }) => {
+      return (
+        <DishDetail
+          dish={
+            this.state.dishes.filter(
+              dish => dish.id === parseInt(match.params.dishId, 10)
+            )[0]
+          }
+          comments={this.state.comments.filter(
+            comment => comment.dishId === parseInt(match.params.dishId, 10)
+          )}
+        />
+      );
+    };
+
     return (
       <>
         <Header />
-        <div className="container">
-          {/* <Menu
-            dishes={this.state.dishes}
-            onClick={dishId => this.onDishSelect(dishId)}
+        <Switch>
+          <Route path="/home" component={HomePage} />
+          <Route
+            exact
+            path="/menu"
+            component={() => <Menu dishes={this.state.dishes} />}
           />
-          <DishDetail
-            dish={
-              this.state.dishes.filter(
-                dish => dish.id === this.state.selectedDish
-              )[0]
-            }
-          /> */}
-          <Switch>
-            <Route path="/home" component={HomePage} />
-            <Route
-              exact
-              path="/menu"
-              component={() => <Menu dishes={this.state.dishes} />}
-            />
-            <Route exact path="/contactus" component={Contact} />
-            <Redirect to="/home" />
-          </Switch>
-        </div>
+          <Route path="/menu/:dishId" component={selectedDish} />
+          <Route exact path="/contactus" component={Contact} />
+          <Redirect to="/home" />
+        </Switch>
         <Footer />
       </>
     );
