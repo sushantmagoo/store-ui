@@ -19,17 +19,6 @@ const validEmail = val => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 export default class Contact extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      firstname: "",
-      lastname: "",
-      telnum: "",
-      email: "",
-      agree: false,
-      contactType: "Tel.",
-      message: "",
-      touched: {}
-    };
-
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -128,7 +117,7 @@ export default class Contact extends Component {
                     show="touched"
                     messages={{
                       required: "Required",
-                      minLength: "Must be greater than 2 characters",
+                      minLength: "Must be greater than 3 characters",
                       maxLength: "Must be 15 characters or less"
                     }}
                   />
