@@ -22,7 +22,7 @@ const required = val => val && val.length;
 const maxLength = len => val => !val || val.length <= len;
 const minLength = len => val => val && val.length >= len;
 
-export default function DishDetail({ dish, comments }) {
+export default function DishDetail({ dish, comments, addComment }) {
   return dish ? (
     <div className="container">
       <div className="row">
@@ -39,7 +39,11 @@ export default function DishDetail({ dish, comments }) {
       </div>
       <div className="row">
         <RenderDish dish={dish} />
-        <RenderComments comments={comments} />
+        <RenderComments
+          comments={comments}
+          addComment={addComment}
+          dishId={dish.id}
+        />
       </div>
     </div>
   ) : (
@@ -61,7 +65,7 @@ function RenderDish({ dish }) {
   );
 }
 
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, dishId }) {
   const _comments = comments.map(cmnt => (
     <li
       key={cmnt.id}
@@ -84,7 +88,7 @@ function RenderComments({ comments }) {
       <ul className="borderless" style={{ paddingLeft: "0px" }}>
         {_comments}
       </ul>
-      <CommentForm />
+      <CommentForm dishId={dishId} addComment={addComment} />
     </div>
   );
 }
@@ -106,7 +110,12 @@ export class CommentForm extends Component {
   }
 
   handleSubmit(values) {
-    console.log("Current State is: " + JSON.stringify(values));
+    this.props.addComment(
+      this.props.dishId,
+      values.rating,
+      values.author,
+      values.comment
+    );
   }
 
   render() {
@@ -120,13 +129,13 @@ export class CommentForm extends Component {
           <ModalBody>
             <LocalForm onSubmit={this.handleSubmit}>
               <Row className="form-group">
-                <Label htmlFor="firstname" md={12}>
+                <Label htmlFor="rating" md={12}>
                   Rating
                 </Label>
                 <Col md={12}>
                   <Control.select
-                    model=".contactType"
-                    name="contactType"
+                    model=".rating"
+                    name="rating"
                     className="form-control"
                   >
                     <option>1</option>
@@ -138,15 +147,15 @@ export class CommentForm extends Component {
                 </Col>
               </Row>
               <Row className="form-group">
-                <Label htmlFor="firstname" md={12}>
-                  First Name
+                <Label htmlFor="author" md={12}>
+                  Your Name
                 </Label>
                 <Col md={12}>
                   <Control.text
-                    model=".firstname"
-                    id="firstname"
-                    name="firstname"
-                    placeholder="First Name"
+                    model=".author"
+                    id="author"
+                    name="author"
+                    placeholder="Your Name"
                     className="form-control"
                     validators={{
                       required,
@@ -156,7 +165,7 @@ export class CommentForm extends Component {
                   />
                   <Errors
                     className="text-danger"
-                    model=".firstname"
+                    model=".author"
                     show="touched"
                     messages={{
                       required: "Required",
