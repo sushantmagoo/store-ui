@@ -17,13 +17,40 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from "react-redux-form";
+import { Loading } from "./LoadingComponent";
 
 const required = val => val && val.length;
 const maxLength = len => val => !val || val.length <= len;
 const minLength = len => val => val && val.length >= len;
 
-export default function DishDetail({ dish, comments, addComment }) {
-  return dish ? (
+export default function DishDetail({
+  dish,
+  isLoading,
+  errMess,
+  comments,
+  addComment
+}) {
+  if (isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
+        </div>
+      </div>
+    );
+  }
+
+  if (errMess) {
+    return (
+      <div className="container">
+        <div className="row">
+          <h4>{errMess}</h4>
+        </div>
+      </div>
+    );
+  }
+
+  return (
     <div className="container">
       <div className="row">
         <Breadcrumb>
@@ -46,8 +73,6 @@ export default function DishDetail({ dish, comments, addComment }) {
         />
       </div>
     </div>
-  ) : (
-    <div className="container" />
   );
 }
 
