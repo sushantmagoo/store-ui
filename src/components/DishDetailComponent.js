@@ -29,7 +29,7 @@ export default function DishDetail({
   isLoading,
   errMess,
   comments,
-  addComment
+  postComment
 }) {
   if (isLoading) {
     return (
@@ -69,7 +69,7 @@ export default function DishDetail({
         <RenderDish dish={dish} />
         <RenderComments
           comments={comments}
-          addComment={addComment}
+          postComment={postComment}
           dishId={dish.id}
         />
       </div>
@@ -91,7 +91,7 @@ function RenderDish({ dish }) {
   );
 }
 
-function RenderComments({ comments, addComment, dishId }) {
+function RenderComments({ comments, postComment, dishId }) {
   const _comments = comments.map(cmnt => (
     <li
       key={cmnt.id}
@@ -114,7 +114,7 @@ function RenderComments({ comments, addComment, dishId }) {
       <ul className="borderless" style={{ paddingLeft: "0px" }}>
         {_comments}
       </ul>
-      <CommentForm dishId={dishId} addComment={addComment} />
+      <CommentForm dishId={dishId} postComment={postComment} />
     </div>
   );
 }
@@ -136,7 +136,7 @@ export class CommentForm extends Component {
   }
 
   handleSubmit(values) {
-    this.props.addComment(
+    this.props.postComment(
       this.props.dishId,
       values.rating,
       values.author,
