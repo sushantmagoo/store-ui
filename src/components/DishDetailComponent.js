@@ -101,12 +101,8 @@ function RenderDish({ dish }) {
 
 function RenderComments({ comments, postComment, dishId }) {
   const _comments = comments.map(cmnt => (
-    <Fade in>
-      <li
-        key={cmnt.id}
-        className="comment-spacing"
-        style={{ listStyleType: "none" }}
-      >
+    <Fade in key={cmnt.id}>
+      <li className="comment-spacing" style={{ listStyleType: "none" }}>
         {cmnt.comment} <br />
         --&nbsp;{cmnt.author},&nbsp;
         {new Intl.DateTimeFormat("en-US", {

@@ -15,10 +15,12 @@ export default function Home({
   dish,
   dishesLoading,
   dishesErrMess,
+  promotion,
   promoLoading,
   promoErrMess,
-  promotion,
-  leader
+  leader,
+  leaderLoading,
+  leaderErrMess
 }) {
   return (
     <div className="container">
@@ -38,7 +40,11 @@ export default function Home({
           />
         </div>
         <div className="col-12 col-md m-1">
-          <RenderCard item={leader} />
+          <RenderCard
+            item={leader}
+            isLoading={leaderLoading}
+            errMess={leaderErrMess}
+          />
         </div>
       </div>
     </div>

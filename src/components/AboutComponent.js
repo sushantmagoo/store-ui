@@ -8,8 +8,19 @@ import {
   Media
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { Fade, Stagger } from "react-animation-components";
+import { Loading } from "./LoadingComponent";
+import { baseUrl } from "../shared/baseUrl";
 
-export default function About({ leaders }) {
+export default function About({ leaders, isLoading, errMess }) {
+  const leader_data = isLoading ? (
+    <Loading />
+  ) : errMess ? (
+    <h4>{errMess}</h4>
+  ) : (
+    <RenderLeader leaders={leaders} />
+  );
+
   return (
     <div className="container">
       <div className="row">
@@ -85,9 +96,7 @@ export default function About({ leaders }) {
         <div className="col-12">
           <h2>Corporate Leadership</h2>
         </div>
-        <div className="col-12">
-          <RenderLeader leaders={leaders} />
-        </div>
+        <div className="col-12">{leader_data}</div>
       </div>
     </div>
   );
@@ -96,20 +105,26 @@ export default function About({ leaders }) {
 function RenderLeader({ leaders }) {
   const _leaders = leaders.map(leader => {
     return (
-      <div key={leader.id} className="col-12 mt-5">
-        <Media tag="li">
-          <Media left middle>
-            <Media object src={leader.image} alt={leader.name} />
+      <Fade in key={leader.id}>
+        <div className="col-12 mt-5">
+          <Media tag="li">
+            <Media left middle>
+              <Media object src={baseUrl + leader.image} alt={leader.name} />
+            </Media>
+            <Media body className="ml-5">
+              <Media heading>{leader.name}</Media>
+              <em>{leader.designation}</em>
+              <p>{leader.description}</p>
+            </Media>
           </Media>
-          <Media body className="ml-5">
-            <Media heading>{leader.name}</Media>
-            <em>{leader.designation}</em>
-            <p>{leader.description}</p>
-          </Media>
-        </Media>
-      </div>
+        </div>
+      </Fade>
     );
   });
 
-  return <Media list>{_leaders}</Media>;
+  return (
+    <Media list>
+      <Stagger in>{_leaders}</Stagger>
+    </Media>
+  );
 }
